@@ -1,7 +1,8 @@
 version: "3"
 services:
   api:
-    image: django-docker/api
+    image: django-docker-api
+    build: .
     ports:
       - 8000:5000
     depends_on:
