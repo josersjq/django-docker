@@ -1,13 +1,5 @@
 FROM python:3.8
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  libpng-dev \
-  libjpeg-dev \
-  libfreetype6-dev \
-  libpq-dev \
-  libssl-dev \
-  pkg-config
-
 WORKDIR /app
 COPY api /app
 RUN pip install poetry
