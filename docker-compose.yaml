@@ -1,0 +1,19 @@
+version: "3"
+services:
+  api:
+    image: piedpiper
+    ports:
+      - 8000:5000
+    depends_on:
+      - db
+  db:
+    image: postgres:15-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+    volumes:
+      - ~/dockerdata/piedpiper_db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
