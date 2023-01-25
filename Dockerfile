@@ -1,18 +1,28 @@
 FROM python:3.8-alpine as base
 
 WORKDIR /app
-COPY api /app
+COPY api/poetry.toml /app/poetry.toml
+COPY api/poetry.lock /app/poetry.lock
+COPY api/pyproject.toml /app/pyproject.toml
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache postgresql-libs \
-    && apk add --no-cache --virtual .build-deps gcc musl-dev libffi-dev postgresql-dev
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev libffi-dev postgresql-dev
 
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir poetry
+RUN pip install --no-cache-dir poetry && \
+    python -m venv .venv && \
+    poetry install --no-root && \
+    apk --purge del .build-deps
 
-FROM base as build
+FROM python:3.8-alpine as build
 
-RUN python -m venv .venv && poetry install && apk --purge del .build-deps
+WORKDIR /app
+COPY api/ /app
+
+# hadolint ignore=DL3018
+RUN apk add --no-cache postgresql-libs
+
+COPY --from=base /app/.venv/ /app/.venv/
 
 FROM build as celery
 
@@ -26,9 +36,7 @@ RUN chmod +x /docker-entrypoint.sh
 
 ENV DJANGO_SETTINGS_MODULE=config.local
 
-FROM base as production
-
-RUN python -m venv .venv && poetry install --no-root && apk --purge del .build-deps
+FROM build as production
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
