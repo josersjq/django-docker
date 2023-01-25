@@ -1,0 +1,48 @@
+{
+  "files.associations": {
+    "api/**/*.html": "html",
+    "api/**/templates/**/*.html": "django-html",
+    "api/**/templates/**/*": "django-txt",
+    "api/**/requirements{/**,*}.{txt,in}": "pip-requirements",
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/api/.venv/bin/python3",
+  "python.languageServer": "Pylance",
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": [
+    "--line-length",
+    "120",
+    "--fast"
+  ],
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": false,
+  "python.linting.pylintArgs": [
+    "--rcfile",
+    "${workspaceFolder}/api/.pylintrc"
+  ],
+  "isort.args": [
+    "--profile=black"
+  ],
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/api/django_docker"
+  ],
+  "python.testing.pytestArgs": [
+    "${workspaceFolder}/api/django_docker",
+    "-n",
+    "auto",
+    "--no-testmon"
+  ],
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/api/django_docker"
+  ],
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+      120
+    ]
+  }
+}
