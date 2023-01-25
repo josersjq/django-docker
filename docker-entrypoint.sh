@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 cd /app/django_docker
 
 /app/.venv/bin/python manage.py migrate
